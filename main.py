@@ -31,7 +31,7 @@ clear_screen()
 
 while True:
     print("---- Social Status ----")
-    decision = input("Post on:\n1) Mastodon\n2) Bluesky\n3) Both\n")
+    decision = input("Post on:\n   1) Mastodon\n   2) Bluesky\n   3) Both\n")
     if decision == "1":
         message = input("Status:\n")
         image = input("Image:\n")
