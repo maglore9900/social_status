@@ -44,9 +44,9 @@ class Mastodon_Status():
                 scheduled_at=None, 
                 poll=None, 
                 quote_id=None)
-            print("success")
+            return "success\n"
         except Exception as e:
-            print(f"failed: {e}")
+            return(f"failed: {e}")
         
         
     

@@ -13,7 +13,7 @@ class Blue():
             if file:
                 post = self.client.send_image(text=message, image=file, image_alt=image_desc)
             else:
-                post = self.client.send_post('Hello world! This is a test.')
+                post = self.client.send_post(message)
         except Exception as e:
             print("Error sending post:", str(e))
 
