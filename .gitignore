@@ -163,3 +163,4 @@ tmp/
 *.secret
 *.png 
 *.jpg
+*.secret
