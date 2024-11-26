@@ -1,3 +1,4 @@
 mastodon.py
 python-environ
 atproto
+Pillow

@@ -29,6 +29,8 @@ clear_screen()
 
 # m.status_post("Sword Memory by Alexey Egorov\nOne of my fav artists.", "sword_memory.jpg")
 
+
+
 while True:
     print("---- Social Status ----")
     decision = input("Post on:\n   1) Mastodon\n   2) Bluesky\n   3) Both\n")
@@ -48,7 +50,7 @@ while True:
         input("Press Enter to continue.")
         clear_screen()
     elif decision == "3":
-        essage = input("Status:\n")
+        message = input("Status:\n")
         image = input("Image:\n") 
         image_desc = input("Image Description:\n")
         m_status = m.status_post(message, image)
