@@ -163,4 +163,4 @@ tmp/
 *.secret
 *.png 
 *.jpg
-
+!screenshot.png
