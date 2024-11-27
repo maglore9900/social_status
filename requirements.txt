@@ -3,3 +3,4 @@ python-environ
 atproto
 Pillow
 prompt_toolkit 
+openai
