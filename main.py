@@ -12,7 +12,7 @@ cl = char_limiter.Char_Limiter()
 #! Conditional setup Tag Assist and Test key
 tag_assist = str(env("ai_tag_assist")).lower()
 if tag_assist == 'true':
-    if env("openaiAPIkey") != '' env("openaiAPIkey") or None:
+    if env("openaiAPIkey") != '' or env("openaiAPIkey") != None:
         try:
             o = open_adapter.OpenAI_Client(env)
             tag_assist = True
