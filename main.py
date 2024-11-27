@@ -51,8 +51,11 @@ while True:
         clear_screen()
     elif decision == "3":
         message = input("Status:\n")
-        image = input("Image:\n") 
-        image_desc = input("Image Description:\n")
+        image = input("Image:\n")
+        if image: 
+            image_desc = input("Image Description:\n")
+        else:
+            image_desc = ''
         m_status = m.status_post(message, image)
         b_status = b.post(message, image, image_desc)
         print(f"Mastodon: {m_status}\nBluesky: {b_status}")
