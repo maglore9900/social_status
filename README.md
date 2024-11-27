@@ -11,3 +11,6 @@ It will automatically resize images if they exceed the maximum size by bluesky. 
 
 
 I may add more sites, if I used them. You are welcome to fork it and use it for yourself.
+
+
+# Installation
