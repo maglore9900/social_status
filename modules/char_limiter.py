@@ -26,7 +26,7 @@ class Char_Limiter:
                     cursor_position=len(document.text)
                 )
 
-    def get_input(self, max_chars=280, prompt_message="Please enter your message:"):
+    def get_input(self, max_chars=280, prompt_message="Please enter your message:", default=None):
         """
         Captures user input with real-time character count and validation.
 
@@ -46,11 +46,17 @@ class Char_Limiter:
                 )
 
             try:
+                prompt_args = {
+                    'multiline': False,
+                    'validator': validator,
+                    'validate_while_typing': True
+                }
+                if default is not None:
+                    prompt_args['default'] = default
+                    
                 self.user_input = self.session.prompt(
                     get_prompt,
-                    multiline=False,
-                    validator=validator,
-                    validate_while_typing=True
+                    **prompt_args
                 )
                 break  # Exit loop if input is valid
             except ValidationError as e:
