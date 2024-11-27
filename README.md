@@ -14,3 +14,16 @@ I may add more sites, if I used them. You are welcome to fork it and use it for 
 
 
 # Installation
+
+* Download the code (clone it or download it and unzip it)
+* Install python on the system (at least v3.10)
+* Create a virtual environment using `python -m venv .` in the folder/dir of the code
+* Activate the environment with `Scripts\activate.bat` on windows or `source bin/activate` on linux
+* Run pip install to install all the required modules `pip install -r requirements.txt`
+
+
+# Configuration
+
+- Copy example.env to .env and add your credential information
+- For Mastodon you will need to run `py reg.py` once. This will register the app and get the keys necessary to make posts.
+- Thats it
