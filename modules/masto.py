@@ -1,5 +1,6 @@
+from modules import file_handler
 from mastodon import Mastodon
-import random
+import os
 
 class Mastodon_Status():
     def __init__(self, env):
@@ -10,24 +11,43 @@ class Mastodon_Status():
             self.env('mastodon_pass'),
             to_file = self.env('mastodon_usercred')
         )
-        self.idem_key = random.randint(1,1000000)
+        self.max_size = 16000000 #in bytes
+        self.fl = file_handler.File_Handler()
         
-    def _media_upload(self, file, filename=None):
-        result = self.mastodon.media_post(
-            media_file=file, 
-            mime_type=None, 
-            description=None, 
-            focus=None, 
-            file_name=filename, 
-            thumbnail=None, 
-            thumbnail_mime_type=None, 
-            synchronous=False)
-        return(result['id'])
+    # def _media_upload(self, file, filename=None):
+    #     result = self.mastodon.media_post(
+    #         media_file=file, 
+    #         mime_type=None, 
+    #         description=None, 
+    #         focus=None, 
+    #         file_name=filename, 
+    #         thumbnail=None, 
+    #         thumbnail_mime_type=None, 
+    #         synchronous=False)
+    #     return(result['id'])
+    
+    def _media_upload(self, file, file_name=None):
+        try:
+            file = self.fl.normalize_path(file)
+            if os.path.getsize(file) > self.max_size:
+                file = self.fl.resize_image(file, self.max_size)
+            result = self.mastodon.media_post(
+                media_file=file, 
+                mime_type=None, 
+                description=None, 
+                focus=None, 
+                file_name=file_name, 
+                thumbnail=None, 
+                thumbnail_mime_type=None, 
+                synchronous=False)
+            return(result['id'])
+        except Exception as e:
+            return("Error handling media:", str(e))
     
     def status_post(self, status, file=None):
         try:
             if file:
-                id = self._media_upload(file, filename=None)
+                id = self._media_upload(file, file_name=None)
             else:
                 id = None    
             

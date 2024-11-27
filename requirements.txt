@@ -2,3 +2,4 @@ mastodon.py
 python-environ
 atproto
 Pillow
+prompt_toolkit 

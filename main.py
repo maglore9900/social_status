@@ -1,4 +1,4 @@
-from modules import blue, masto
+from modules import blue, masto, char_limiter
 import environ
 import os
 
@@ -7,6 +7,7 @@ environ.Env.read_env()
 
 b = blue.Blue(env)
 m = masto.Mastodon_Status(env)
+cl = char_limiter.Char_Limiter()
 
 
 
@@ -18,46 +19,37 @@ def clear_screen():
     else:
         os.system('clear')
 
-
-clear_screen()
-
-# with open("tea2.jpg", 'rb') as f:
-#     f.read()        
-#     b.post("Ponder the tea eternal", f, "man confused by tea")
-
-# b.post("yet another test, sorry for the spam")
-
-# m.status_post("Sword Memory by Alexey Egorov\nOne of my fav artists.", "sword_memory.jpg")
-
-
-
 while True:
+    clear_screen()
     print("---- Social Status ----")
     decision = input("Post on:\n   1) Mastodon\n   2) Bluesky\n   3) Both\n")
     if decision == "1":
-        message = input("Status:\n")
+        clear_screen()
+        message = cl.get_input(max_chars=500, prompt_message="Status:")
         image = input("Image:\n")
         status = m.status_post(message, image)
         print(status)
         input("Press Enter to continue.")
-        clear_screen()
     elif decision == "2":
-        message = input("Status:\n")
+        clear_screen()
+        message = cl.get_input(max_chars=300, prompt_message="Status:")
         image = input("Image:\n") 
-        image_desc = input("Image Description:\n")
+        if image: 
+            image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:")
+        else:
+            image_desc = ''
         status = b.post(message, image, image_desc)
         print(status)
         input("Press Enter to continue.")
-        clear_screen()
     elif decision == "3":
-        message = input("Status:\n")
+        clear_screen()
+        message = cl.get_input(max_chars=300, prompt_message="Status:")
         image = input("Image:\n")
         if image: 
-            image_desc = input("Image Description:\n")
+            image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:")
         else:
             image_desc = ''
         m_status = m.status_post(message, image)
         b_status = b.post(message, image, image_desc)
         print(f"Mastodon: {m_status}\nBluesky: {b_status}")
         input("Press Enter to continue.")
-        clear_screen()
