@@ -11,7 +11,7 @@ Currently supports posts with or without images on:
 
 Social Status:
 
-- Automatically resize images if they exceed the maximum size by bluesky.
+- Automatically resize images if they exceed the maximum size by Mastodon or Bluesky.
 - Dynamically counts and shows current characters in the status, with the limitations coded for both Mastodon and Bluesky
 - Additionally, there is now an optional AI Image Tagging feature, which uses OpenAI to generate hashtags for images you are going to upload.
 
