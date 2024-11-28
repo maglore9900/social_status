@@ -29,51 +29,84 @@ def clear_screen():
     # For Unix/Linux/Mac
     else:
         os.system('clear')
-
-while True:
-    tags = None
+        
+def post_to_platform(platform_name, max_chars, has_image_desc=False):
+    """
+    Handles posting a message to a specified platform.
+    """
     clear_screen()
-    print("---- Social Status ----")
-    decision = input("Post on:\n   1) Mastodon\n   2) Bluesky\n   3) Both\n")
-    if decision == "1":
-        clear_screen()
-        if tag_assist:
-            print("AI Tag Assist Enabled")
-        image = input("Attach Image (optional):\n")
-        if tag_assist:
-            tags = o.tag_image(image)
-        message = cl.get_input(max_chars=500, prompt_message="Status:", default=tags)
-        status = m.status_post(message, image)
-        print(status)
-        input("Press Enter to continue.")
-    elif decision == "2":
-        clear_screen()
-        if tag_assist:
-            print("AI Tag Assist Enabled")
-        image = input("Attach Image (optional):\n")
-        if tag_assist:
-            tags = o.tag_image(image) 
-        message = cl.get_input(max_chars=300, prompt_message="Status:", default=tags)
-        if image: 
-            image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:")
+    if tag_assist:
+        print("   *AI Tag Assist Enabled")
+    image = input("Attach Image (optional):\n")
+    tags = o.tag_image(image) if tag_assist else None
+    message = cl.get_input(max_chars=max_chars, prompt_message="Status:", default=tags)
+    image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:") if has_image_desc and image else ''
+
+    if platform_name == "mastodon":
+        return m.status_post(message, image)
+    elif platform_name == "bluesky":
+        return b.post(message, image, image_desc)
+    else:
+        raise ValueError(f"Unknown platform: {platform_name}")
+
+def post_to_multiple(platforms):
+    """
+    Handles posting a message to multiple platforms.
+    """
+    clear_screen()
+    if tag_assist:
+        print("   *AI Tag Assist Enabled")
+    image = input("Attach Image (optional):\n")
+    tags = o.tag_image(image) if tag_assist else None
+    message = cl.get_input(max_chars=300, prompt_message="Status:", default=tags)
+    image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:") if image else ''
+
+    statuses = {}
+    for platform in platforms:
+        if platform == "mastodon":
+            statuses["Mastodon"] = m.status_post(message, image)
+        elif platform == "bluesky":
+            statuses["Bluesky"] = b.post(message, image, image_desc)
         else:
-            image_desc = ''
-        status = b.post(message, image, image_desc)
-        print(status)
-        input("Press Enter to continue.")
-    elif decision == "3":
+            raise ValueError(f"Unknown platform: {platform}")
+
+    return statuses
+
+def main():
+    platforms = {
+        "1": {"name": "mastodon", "max_chars": 500, "has_image_desc": False},
+        "2": {"name": "bluesky", "max_chars": 300, "has_image_desc": True},
+    }
+
+    # Calculate smallest max_chars value across all platforms
+    smallest_max_chars = min(platform["max_chars"] for platform in platforms.values())
+
+    # Add the "all" option dynamically
+    platforms["3"] = {"name": "all", "max_chars": smallest_max_chars, "has_image_desc": True}
+
+    while True:
         clear_screen()
-        if tag_assist:
-            print("AI Tag Assist Enabled")
-        image = input("Attach Image (optional):\n")
-        if tag_assist:
-            tags = o.tag_image(image)
-        message = cl.get_input(max_chars=300, prompt_message="Status:", default=tags)
-        if image: 
-            image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:")
+        print("---- Social Status ----")
+        decision = input("Post on:\n   1) Mastodon\n   2) Bluesky\n   3) All\n")
+        platform_info = platforms.get(decision)
+
+        if not platform_info:
+            print("Invalid selection. Please try again.")
+            input("Press Enter to continue.")
+            continue
+
+        if platform_info["name"] == "all":
+            statuses = post_to_multiple(["mastodon", "bluesky"])
+            print("\n".join([f"{k}: {v}" for k, v in statuses.items()]))
         else:
-            image_desc = ''
-        m_status = m.status_post(message, image)
-        b_status = b.post(message, image, image_desc)
-        print(f"Mastodon: {m_status}\nBluesky: {b_status}")
+            status = post_to_platform(
+                platform_name=platform_info["name"],
+                max_chars=platform_info["max_chars"],
+                has_image_desc=platform_info["has_image_desc"],
+            )
+            print(status)
+
         input("Press Enter to continue.")
+
+if __name__ == "__main__":
+    main()
