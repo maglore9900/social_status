@@ -9,7 +9,9 @@ Currently supports posts with or without images on:
 1) Mastodon
 2) Bluesky
 
-Social Status:
+![](images/mastodon_sm.png) ![](images/bluesky_logo_sm.png)
+
+Social Status:  
 
 - Automatically resize images if they exceed the maximum size by Mastodon or Bluesky.
 - Dynamically counts and shows current characters in the status, with the limitations coded for both Mastodon and Bluesky
@@ -21,14 +23,14 @@ I may add more sites, if I used them. You are welcome to fork it and use it for 
 
 # Installation
 
-* Download the code (clone it or download it and unzip it)
-* Install python 3.12 on your system
-* Create a virtual environment using `python -m venv .` in the folder/dir of the code
-* Activate the environment with `Scripts\activate.bat` on windows or `source bin/activate` on linux
-* Run pip install to install all the required modules `pip install -r requirements.txt`
+* Download the code (clone it or download it and unzip it).
+* Install python 3.12 on your system.
+* Create a virtual environment using `python -m venv venv` in the folder/dir of the code.
+* Activate the environment with `venv\Scripts\activate.bat` on windows or `source venv/bin/activate` on linux.
+* Run pip install to install all the required modules `pip install -r requirements.txt`.
 
 # Configuration
 
 - Copy example.env to .env and add your credential information.
 - For Mastodon you will need to run `py reg.py` once. This will register the app and get the keys necessary to make posts.
-- Thats it
+- Thats it.
