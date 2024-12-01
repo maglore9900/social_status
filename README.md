@@ -9,8 +9,6 @@ Currently supports posts with or without images on:
 1) Mastodon
 2) Bluesky
 
-![](images/mastodon_sm.png) ![](images/bluesky_logo_sm.png)
-
 Social Status:
 
 - Automatically resize images if they exceed the maximum size by Mastodon or Bluesky.
@@ -25,8 +23,8 @@ I may add more sites, if I used them. You are welcome to fork it and use it for 
 
 * Download the code (clone it or download it and unzip it)
 * Install python 3.12 on your system
-* Create a virtual environment using `python -m venv venv` in the folder/dir of the code
-* Activate the environment with `venv\Scripts\activate.bat` on windows or `source venv/bin/activate` on linux
+* Create a virtual environment using `python -m venv .` in the folder/dir of the code
+* Activate the environment with `Scripts\activate.bat` on windows or `source bin/activate` on linux
 * Run pip install to install all the required modules `pip install -r requirements.txt`
 
 # Configuration
