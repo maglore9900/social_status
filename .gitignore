@@ -164,3 +164,6 @@ tmp/
 *.png 
 *.jpg
 !screenshot.png
+!bluesky*.png 
+!mastodon*.png
+

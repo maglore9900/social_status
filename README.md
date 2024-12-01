@@ -9,6 +9,8 @@ Currently supports posts with or without images on:
 1) Mastodon
 2) Bluesky
 
+![](images/mastodon_sm.png) ![](images/bluesky_logo_sm.png)
+
 Social Status:
 
 - Automatically resize images if they exceed the maximum size by Mastodon or Bluesky.
