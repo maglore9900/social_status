@@ -1,4 +1,4 @@
-from modules import blue, masto, char_limiter, open_adapter
+from modules import blue, masto, char_limiter, open_adapter, file_handler
 import environ
 import os
 
@@ -8,6 +8,7 @@ environ.Env.read_env()
 b = blue.Blue(env)
 m = masto.Mastodon_Status(env)
 cl = char_limiter.Char_Limiter()
+f = file_handler.File_Handler()
 
 #! Conditional setup Tag Assist and Test key
 tag_assist = str(env("ai_tag_assist")).lower()
@@ -49,17 +50,19 @@ def post_to_platform(platform_name, max_chars, has_image_desc=False):
     else:
         raise ValueError(f"Unknown platform: {platform_name}")
 
-def post_to_multiple(platforms):
+def post_to_multiple(platforms, max_chars):
     """
     Handles posting a message to multiple platforms.
     """
     clear_screen()
-    if tag_assist:
-        print("   *AI Tag Assist Enabled")
+    #! handle user input and tag_assist
+    if tag_assist: print("   *AI Tag Assist Enabled")
     image = input("Attach Image (optional):\n")
     tags = o.tag_image(image) if tag_assist else None
-    message = cl.get_input(max_chars=300, prompt_message="Status:", default=tags)
-    image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:") if image else ''
+    message = cl.get_input(max_chars=max_chars, prompt_message="Status:", default=tags)
+    # image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:") if image else ''
+    image_desc = cl.get_input(max_chars=max_chars, prompt_message="Image Description:",
+        default=o.desc_image(image, max_chars=max_chars) if tag_assist and image else '')
 
     statuses = {}
     for platform in platforms:
@@ -96,7 +99,7 @@ def main():
             continue
 
         if platform_info["name"] == "all":
-            statuses = post_to_multiple(["mastodon", "bluesky"])
+            statuses = post_to_multiple(["mastodon", "bluesky"], max_chars=smallest_max_chars)
             print("\n".join([f"{k}: {v}" for k, v in statuses.items()]))
         else:
             status = post_to_platform(
@@ -105,7 +108,8 @@ def main():
                 has_image_desc=platform_info["has_image_desc"],
             )
             print(status)
-
+        #! remove all tmp files from the tmp/ dir
+        f.file_cleanup()
         input("Press Enter to continue.")
 
 if __name__ == "__main__":

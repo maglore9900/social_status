@@ -1,5 +1,7 @@
 import base64
 from openai import OpenAI
+import shutil
+import os
 
 
 class OpenAI_Client():
@@ -12,10 +14,6 @@ class OpenAI_Client():
             return base64.b64encode(image_file.read()).decode('utf-8')
 
     def tag_image(self, image_path):
-        # Path to your image
-        # image_path = "path_to_your_image.jpg"
-
-        # Getting the base64 string
         file_type = image_path.split('.')[-1]
         base64_image = self._encode_image(image_path)
         response = self.client.chat.completions.create(
@@ -43,5 +41,31 @@ class OpenAI_Client():
         clean_tags = tags.replace('\n', ' ').replace(',', ' ')
         return(clean_tags)
     
+    def desc_image(self, image_path, max_chars):
+        file_type = image_path.split('.')[-1]
+        base64_image = self._encode_image(image_path)
+        response = self.client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+            "role": "user",
+            "content": [
+                {
+                "type": "text",
+                "text": f"Describe the image for Alt Text Accessibility. Return a response no longer than {max_chars} characters",
+                },
+                {
+                "type": "image_url",
+                "image_url": {
+                    "url":  f"data:image/{file_type};base64,{base64_image}"
+                },
+                },
+            ],
+            }
+        ],
+        )
+        tags = response.choices[0].message.content
+        clean_tags = tags.replace('\n', ' ').replace(',', ' ')
+        return(clean_tags)
     
 
