@@ -13,16 +13,18 @@ Social Status:
 
 - Automatically resize images if they exceed the maximum size by Mastodon or Bluesky.
 - Dynamically counts and shows current characters in the status, with the limitations coded for both Mastodon and Bluesky
-- Additionally, there is now an optional AI Image Tagging feature, which uses OpenAI to generate hashtags for images you are going to upload.
+- Optional AI Image Tagging feature, which uses OpenAI to generate hashtags for images you are going to upload.
+- Optional AI Image Description feature to draft Alt Text for accessibility.
+- If images need to be resized they need to be PNG, it converts the file locally in a TMP dir and then deletes the tmp files.
 
 I may add more sites, if I used them. You are welcome to fork it and use it for yourself.
 
 # Installation
 
 * Download the code (clone it or download it and unzip it)
-* Install python on the system (at least v3.10)
-* Create a virtual environment using `python -m venv .` in the folder/dir of the code
-* Activate the environment with `Scripts\activate.bat` on windows or `source bin/activate` on linux
+* Install python 3.12 on your system
+* Create a virtual environment using `python -m venv venv` in the folder/dir of the code
+* Activate the environment with `venv\Scripts\activate.bat` on windows or `source venv/bin/activate` on linux
 * Run pip install to install all the required modules `pip install -r requirements.txt`
 
 # Configuration
