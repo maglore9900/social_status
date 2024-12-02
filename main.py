@@ -58,6 +58,7 @@ def post_to_multiple(platforms, max_chars):
     #! handle user input and tag_assist
     if tag_assist: print("   *AI Tag Assist Enabled")
     image = input("Attach Image (optional):\n")
+    if image: image = os.path.normpath(image.strip('\"'))
     tags = o.tag_image(image) if tag_assist else None
     message = cl.get_input(max_chars=max_chars, prompt_message="Status:", default=tags)
     # image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:") if image else ''
