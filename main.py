@@ -39,7 +39,7 @@ def post_to_platform(platform_name, max_chars, has_image_desc=False):
     if tag_assist:
         print("   *AI Tag Assist Enabled")
     image = input("Attach Image (optional):\n")
-    tags = o.tag_image(image) if tag_assist else None
+    tags = o.tag_image(image) if tag_assist and image else None
     message = cl.get_input(max_chars=max_chars, prompt_message="Status:", default=tags)
     image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:") if has_image_desc and image else ''
 
@@ -59,11 +59,12 @@ def post_to_multiple(platforms, max_chars):
     if tag_assist: print("   *AI Tag Assist Enabled")
     image = input("Attach Image (optional):\n")
     if image: image = os.path.normpath(image.strip('\"'))
-    tags = o.tag_image(image) if tag_assist else None
+    tags = o.tag_image(image) if tag_assist and image else None
     message = cl.get_input(max_chars=max_chars, prompt_message="Status:", default=tags)
     # image_desc = cl.get_input(max_chars=300, prompt_message="Image Description:") if image else ''
-    image_desc = cl.get_input(max_chars=max_chars, prompt_message="Image Description:",
-        default=o.desc_image(image, max_chars=max_chars) if tag_assist and image else '')
+    if image:
+        image_desc = cl.get_input(max_chars=max_chars, prompt_message="Image Description:",
+            default=o.desc_image(image, max_chars=max_chars) if tag_assist and image else '')
 
     statuses = {}
     for platform in platforms:
