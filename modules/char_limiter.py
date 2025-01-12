@@ -1,8 +1,8 @@
-# char_limiter.py
-
 from prompt_toolkit import PromptSession
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.validation import Validator, ValidationError
+from prompt_toolkit.key_binding import KeyBindings
+
 
 class Char_Limiter:
     def __init__(self, ):
@@ -14,6 +14,7 @@ class Char_Limiter:
         """
         self.session = PromptSession()
         self.user_input = ''
+        self.bindings = KeyBindings()
 
     class LengthValidator(Validator):
         def __init__(self, max_chars):
@@ -33,23 +34,33 @@ class Char_Limiter:
         :return: User input string within the character limit.
         """
         validator = self.LengthValidator(max_chars)
-        while True:
-            # Generate dynamic prompt with character count
-            def get_prompt():
-                current_length = len(self.session.default_buffer.text)
-                remaining = max_chars - current_length
-                return HTML(
-                    f'<ansiblue>{prompt_message}</ansiblue>\n'
-                    f'<ansigreen>Characters used:</ansigreen> '
-                    f'<b>{current_length}</b>/<b>{max_chars}</b> '
-                    f'(Remaining: {remaining})\n> '
-                )
 
+        # Generate dynamic prompt with character count
+        def get_prompt():
+            current_length = len(self.session.default_buffer.text)
+            remaining = max_chars - current_length
+            return HTML(
+                f'<ansiblue>{prompt_message}</ansiblue>\n'
+                f'<ansigreen>Characters used:</ansigreen> '
+                f'<b>{current_length}</b>/<b>{max_chars}</b> '
+                f'(Remaining: {remaining})\n '
+                f'Use shift-down arrow for multi-line.\n>'
+            )
+        @self.bindings.add('s-down')
+        def _(event):
+            event.current_buffer.insert_text('\n')
+
+        @self.bindings.add('enter')
+        def _(event):
+            event.current_buffer.validate_and_handle()
+
+        while True:
             try:
                 prompt_args = {
-                    'multiline': False,
+                    'multiline': True,
                     'validator': validator,
-                    'validate_while_typing': True
+                    'validate_while_typing': True,
+                    'key_bindings': self.bindings
                 }
                 if default is not None:
                     prompt_args['default'] = default
@@ -64,3 +75,5 @@ class Char_Limiter:
                 print('Please shorten your message.\n')
 
         return self.user_input
+
+

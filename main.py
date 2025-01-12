@@ -65,6 +65,8 @@ def post_to_multiple(platforms, max_chars):
     if image:
         image_desc = cl.get_input(max_chars=max_chars, prompt_message="Image Description:",
             default=o.desc_image(image, max_chars=max_chars) if tag_assist and image else '')
+    else:
+        image_desc = ''
 
     statuses = {}
     for platform in platforms:
