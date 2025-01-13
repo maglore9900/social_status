@@ -44,7 +44,7 @@ class Char_Limiter:
                 f'<ansigreen>Characters used:</ansigreen> '
                 f'<b>{current_length}</b>/<b>{max_chars}</b> '
                 f'(Remaining: {remaining})\n '
-                f'Use shift-down arrow for multi-line.\n>'
+                f'Use shift-down arrow for multi-line.\n\n> '
             )
         @self.bindings.add('s-down')
         def _(event):
